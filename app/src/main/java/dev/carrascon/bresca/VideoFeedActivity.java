@@ -1,8 +1,6 @@
 package dev.carrascon.bresca;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -49,7 +47,10 @@ public class VideoFeedActivity extends AppCompatActivity {
                 videoList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Video video = snapshot.getValue(Video.class);
-                    videoList.add(video);
+                    if (video != null) {
+                        video.setVideoId(snapshot.getKey());
+                        videoList.add(video);
+                    }
                 }
                 videoAdapter.notifyDataSetChanged();
             }

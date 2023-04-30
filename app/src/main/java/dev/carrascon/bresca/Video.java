@@ -5,6 +5,9 @@ public class Video {
     private String videoUrl;
     private String timestamp;
 
+    private String videoId;
+
+
     public Video() {
     }
 
@@ -12,6 +15,14 @@ public class Video {
         this.userId = userId;
         this.videoUrl = videoUrl;
         this.timestamp = timestamp;
+    }
+
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
     }
 
     public String getUserId() {
