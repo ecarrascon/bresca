@@ -86,7 +86,12 @@ public class UploadVideoActivity extends AppCompatActivity {
                     Uri downloadUri = task.getResult();
 
                     DatabaseReference newVideoRef = databaseReference.push();
-                    newVideoRef.setValue(new Video(firebaseAuth.getCurrentUser().getUid(), downloadUri.toString(), timeStamp));
+                    String videoId = newVideoRef.getKey();
+
+                    Video video = new Video(firebaseAuth.getCurrentUser().getUid(), downloadUri.toString(), timeStamp);
+                    video.setVideoId(videoId);
+
+                    newVideoRef.setValue(video);
 
                     progressDialog.dismiss();
                     Toast.makeText(UploadVideoActivity.this, "Video uploaded successfully!", Toast.LENGTH_SHORT).show();
@@ -99,4 +104,5 @@ public class UploadVideoActivity extends AppCompatActivity {
             Toast.makeText(this, "Please select a video to upload", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

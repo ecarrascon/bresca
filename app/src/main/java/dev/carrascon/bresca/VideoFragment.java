@@ -33,7 +33,11 @@ import java.util.Calendar;
 public class VideoFragment extends Fragment {
 
     private static final String ARG_VIDEO_URL = "videoUrl";
+    private static final String ARG_VIDEO_ID = "videoId";
+
     private String videoUrl;
+    private String videoId;
+
 
     private com.google.android.exoplayer2.ui.PlayerView exoPlayerView;
     private SimpleExoPlayer exoPlayer;
@@ -43,10 +47,11 @@ public class VideoFragment extends Fragment {
     public VideoFragment() {
     }
 
-    public static VideoFragment newInstance(String videoUrl) {
+    public static VideoFragment newInstance(String videoUrl, String videoId) {
         VideoFragment fragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_VIDEO_URL, videoUrl);
+        args.putString(ARG_VIDEO_ID, videoId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,6 +61,7 @@ public class VideoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             videoUrl = getArguments().getString(ARG_VIDEO_URL);
+            videoId = getArguments().getString(ARG_VIDEO_ID);
         }
     }
 
@@ -94,7 +100,7 @@ public class VideoFragment extends Fragment {
         if (currentUser != null) {
             String userId = currentUser.getUid();
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ScheduledVideos");
-            ScheduledVideo scheduledVideo = new ScheduledVideo(userId, "prueba", scheduledDate);
+            ScheduledVideo scheduledVideo = new ScheduledVideo(userId, videoId, scheduledDate);
             databaseReference.push().setValue(scheduledVideo)
                     .addOnSuccessListener(aVoid -> Toast.makeText(requireContext(), "Video scheduled!", Toast.LENGTH_SHORT).show())
                     .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to schedule video", Toast.LENGTH_SHORT).show());

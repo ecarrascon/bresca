@@ -24,9 +24,9 @@ public class VideoAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Video video = videoList.get(position);
-        return VideoFragment.newInstance(video.getVideoUrl());
+        return VideoFragment.newInstance(videoList.get(position).getVideoUrl(), videoList.get(position).getVideoId());
     }
+
 
     @Override
     public int getItemCount() {
