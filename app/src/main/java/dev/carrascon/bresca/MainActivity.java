@@ -38,11 +38,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+
+        if (currentUser != null) {
+            Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         setContentView(R.layout.activity_main);
 
         btnSignIn = findViewById(R.id.btnGoogleSignIn);
-
-        auth = FirebaseAuth.getInstance();
 
         database = FirebaseDatabase.getInstance();
 
@@ -52,11 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                                .build();
+                .requestEmail()
+                .build();
 
         managerGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
 
         btnSignIn.setOnClickListener(v -> {
             signIn();
