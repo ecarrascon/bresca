@@ -20,11 +20,15 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import android.widget.Button;
 import android.app.DatePickerDialog;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -37,6 +41,7 @@ public class VideoFragment extends Fragment {
 
     private String videoUrl;
     private String videoId;
+    private TextView tvScheduledUsers;
 
 
     private com.google.android.exoplayer2.ui.PlayerView exoPlayerView;
@@ -77,8 +82,13 @@ public class VideoFragment extends Fragment {
         scheduleButton = view.findViewById(R.id.scheduleButton);
         scheduleButton.setOnClickListener(v -> openCalendar());
 
+        tvScheduledUsers = view.findViewById(R.id.tv_scheduled_users);
+
+
         exoPlayerView = view.findViewById(R.id.exoPlayerView);
         initializePlayer();
+        updateScheduledUsersCount();
+
     }
 
     private void openCalendar() {
@@ -129,6 +139,48 @@ public class VideoFragment extends Fragment {
 
 
 
+    private void updateScheduledUsersCount() {
+        DatabaseReference scheduledVideosRef = FirebaseDatabase.getInstance().getReference("ScheduledVideos");
+        long startOfDay = getStartOfDayTimestamp();
+        long endOfDay = getEndOfDayTimestamp();
+
+        scheduledVideosRef.orderByChild("scheduledDate").startAt(startOfDay).endAt(endOfDay).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int count = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ScheduledVideo scheduledVideo = snapshot.getValue(ScheduledVideo.class);
+                    if (scheduledVideo != null && scheduledVideo.getVideoId().equals(videoId)) {
+                        count++;
+                    }
+                }
+                tvScheduledUsers.setText(count + " users are going to cook this today");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle database error
+            }
+        });
+    }
+
+    private long getStartOfDayTimestamp() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    private long getEndOfDayTimestamp() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTimeInMillis();
+    }
 
     @Override
     public void onPause() {
