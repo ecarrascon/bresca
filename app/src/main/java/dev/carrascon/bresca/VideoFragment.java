@@ -15,6 +15,7 @@ import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
@@ -63,6 +64,9 @@ public class VideoFragment extends Fragment {
         exoPlayerView.setPlayer(exoPlayer);
         exoPlayerView.setUseController(false);
 
+        // Set the video scaling mode
+        exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(requireContext(), Util.getUserAgent(requireContext(), "Bresca"));
         MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(Uri.parse(videoUrl)));
 
@@ -72,6 +76,7 @@ public class VideoFragment extends Fragment {
 
         exoPlayerView.setOnClickListener(v -> exoPlayer.setPlayWhenReady(!exoPlayer.isPlaying()));
     }
+
 
 
 
