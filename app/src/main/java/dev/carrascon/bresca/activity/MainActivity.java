@@ -1,6 +1,5 @@
-package dev.carrascon.bresca;
+package dev.carrascon.bresca.activity;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,17 +14,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
+
+import dev.carrascon.bresca.R;
+import dev.carrascon.bresca.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
+        // Check if the user is already signed in.
+        // This step is necessary to prevent the user from having to sign in every time the app is opened.
+        // Comprueba si el usuario ya ha iniciado sesión.
+        // Este paso es necesario para evitar que el usuario tenga que iniciar sesión cada vez que abre la aplicación.
         if (currentUser != null) {
             Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
             startActivity(intent);
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void signIn() {
         Intent intent = managerGoogleSignInClient.getSignInIntent();
-        startActivityForResult(intent,RC_SIGN_IN);
+        startActivityForResult(intent, RC_SIGN_IN);
 
 
     }
@@ -104,25 +107,24 @@ public class MainActivity extends AppCompatActivity {
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
 
-                   if (task.isSuccessful()) {
-                       FirebaseUser user = auth.getCurrentUser();
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = auth.getCurrentUser();
 
-                       User userApp = new User();
-                       userApp.setUserId(user.getUid());
-                       userApp.setName(user.getDisplayName());
-                       userApp.setProfile(Objects.requireNonNull(user.getPhotoUrl()).toString());
+                        User userApp = new User();
+                        userApp.setUserId(user.getUid());
+                        userApp.setName(user.getDisplayName());
+                        userApp.setProfile(Objects.requireNonNull(user.getPhotoUrl()).toString());
 
-                       database.getReference().child("Users").child(user.getUid()).setValue(userApp);
+                        database.getReference().child("Users").child(user.getUid()).setValue(userApp);
 
-                          Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
-                            startActivity(intent);
-                   }
-                   else {
+                        Intent intent = new Intent(MainActivity.this, PrincipalActivity.class);
+                        startActivity(intent);
+                    } else {
 
 
-                       Toast.makeText(MainActivity.this, "Sorry, authentication failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Sorry, authentication failed", Toast.LENGTH_SHORT).show();
 
-                   }
+                    }
 
                 });
 

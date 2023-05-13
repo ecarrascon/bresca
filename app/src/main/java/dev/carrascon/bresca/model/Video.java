@@ -1,4 +1,4 @@
-package dev.carrascon.bresca;
+package dev.carrascon.bresca.model;
 
 public class Video {
     private String userId;

@@ -1,7 +1,10 @@
-package dev.carrascon.bresca;
+package dev.carrascon.bresca.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
+import dev.carrascon.bresca.R;
 
 public class UserCalendarActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package dev.carrascon.bresca;
+package dev.carrascon.bresca.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.viewpager2.widget.ViewPager2;
+
+import dev.carrascon.bresca.R;
+import dev.carrascon.bresca.adapter.VideoAdapter;
+import dev.carrascon.bresca.model.Video;
 
 public class VideoFeedActivity extends AppCompatActivity {
 

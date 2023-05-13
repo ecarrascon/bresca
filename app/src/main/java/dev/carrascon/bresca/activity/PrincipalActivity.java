@@ -1,4 +1,4 @@
-package dev.carrascon.bresca;
+package dev.carrascon.bresca.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+
+import dev.carrascon.bresca.R;
 
 public class PrincipalActivity extends AppCompatActivity {
 

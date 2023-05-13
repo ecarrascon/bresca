@@ -1,4 +1,4 @@
-package dev.carrascon.bresca;
+package dev.carrascon.bresca.adapter;
 
 import android.content.Context;
 
@@ -9,6 +9,9 @@ import java.util.List;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import dev.carrascon.bresca.fragment.VideoFragment;
+import dev.carrascon.bresca.model.Video;
 
 public class VideoAdapter extends FragmentStateAdapter {
 

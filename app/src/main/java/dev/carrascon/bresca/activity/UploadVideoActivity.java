@@ -1,4 +1,4 @@
-package dev.carrascon.bresca;
+package dev.carrascon.bresca.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +15,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import dev.carrascon.bresca.R;
+import dev.carrascon.bresca.model.Video;
 
 public class UploadVideoActivity extends AppCompatActivity {
 
@@ -73,6 +75,10 @@ public class UploadVideoActivity extends AppCompatActivity {
         if (videoUri != null) {
             progressDialog.show();
 
+            // We generate a unique timestamp for each video uploaded.
+            // This is done to prevent overwriting videos in Firebase Storage in case two videos have the same name.
+            // Generamos una marca de tiempo única para cada video subido.
+            // Esto se hace para evitar sobrescribir videos en Firebase Storage en caso de que dos videos tengan el mismo nombre.
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
             StorageReference videoRef = storageReference.child("video_" + timeStamp);
 

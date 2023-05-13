@@ -1,4 +1,4 @@
-package dev.carrascon.bresca;
+package dev.carrascon.bresca.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +32,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+
+import dev.carrascon.bresca.R;
+import dev.carrascon.bresca.model.ScheduledVideo;
 
 
 public class VideoFragment extends Fragment {
@@ -105,6 +108,7 @@ public class VideoFragment extends Fragment {
 
         datePickerDialog.show();
     }
+
     private void scheduleVideo(long scheduledDate) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
@@ -136,7 +140,6 @@ public class VideoFragment extends Fragment {
 
         exoPlayerView.setOnClickListener(v -> exoPlayer.setPlayWhenReady(!exoPlayer.isPlaying()));
     }
-
 
 
     private void updateScheduledUsersCount() {

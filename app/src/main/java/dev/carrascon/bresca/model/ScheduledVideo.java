@@ -1,4 +1,4 @@
-package dev.carrascon.bresca;
+package dev.carrascon.bresca.model;
 
 public class ScheduledVideo {
     private String userId;
