@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +28,12 @@ import dev.carrascon.bresca.model.Video;
 public class UploadVideoActivity extends AppCompatActivity {
 
     private static final int VIDEO_PICK_REQUEST = 100;
+    private static final int IMAGE_PICK_REQUEST = 101;
+
+    private EditText edtTitle, edtDescription;
+    private ImageView imgThumbnail;
+    private Uri thumbnailUri;
+
     private Uri videoUri;
 
     private Button btnSelectVideo;
@@ -54,6 +62,19 @@ public class UploadVideoActivity extends AppCompatActivity {
 
         btnSelectVideo.setOnClickListener(v -> selectVideo());
         btnUploadVideo.setOnClickListener(v -> uploadVideo());
+        edtTitle = findViewById(R.id.edtTitle);
+        edtDescription = findViewById(R.id.edtDescription);
+        imgThumbnail = findViewById(R.id.imgThumbnail);
+
+        imgThumbnail.setOnClickListener(v -> selectThumbnail());
+
+
+    }
+
+    private void selectThumbnail() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_REQUEST);
     }
 
     private void selectVideo() {
@@ -68,11 +89,14 @@ public class UploadVideoActivity extends AppCompatActivity {
 
         if (requestCode == VIDEO_PICK_REQUEST && resultCode == RESULT_OK && data != null) {
             videoUri = data.getData();
+        } else if (requestCode == IMAGE_PICK_REQUEST && resultCode == RESULT_OK && data != null) {
+            thumbnailUri = data.getData();
+            imgThumbnail.setImageURI(thumbnailUri);
         }
     }
 
     private void uploadVideo() {
-        if (videoUri != null) {
+        if (videoUri != null && thumbnailUri != null) {
             progressDialog.show();
 
             // We generate a unique timestamp for each video uploaded.
@@ -87,28 +111,48 @@ public class UploadVideoActivity extends AppCompatActivity {
                     throw task.getException();
                 }
                 return videoRef.getDownloadUrl();
-            }).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
+            }).continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                String videoDownloadUrl = task.getResult().toString();
+
+                StorageReference thumbnailRef = storageReference.child("thumbnail_" + timeStamp);
+                return thumbnailRef.putFile(thumbnailUri).continueWithTask(thumbnailTask -> {
+                    if (!thumbnailTask.isSuccessful()) {
+                        throw thumbnailTask.getException();
+                    }
+                    return thumbnailRef.getDownloadUrl();
+                }).continueWith(thumbnailTask -> {
+                    if (!thumbnailTask.isSuccessful()) {
+                        throw thumbnailTask.getException();
+                    }
+
+                    String thumbnailDownloadUrl = thumbnailTask.getResult().toString();
 
                     DatabaseReference newVideoRef = databaseReference.push();
                     String videoId = newVideoRef.getKey();
 
-                    Video video = new Video(firebaseAuth.getCurrentUser().getUid(), downloadUri.toString(), timeStamp);
+                    Video video = new Video(firebaseAuth.getCurrentUser().getUid(), videoDownloadUrl, timeStamp);
                     video.setVideoId(videoId);
+                    video.setTitle(edtTitle.getText().toString().trim());
+                    video.setDescription(edtDescription.getText().toString().trim());
+                    video.setThumbnailUrl(thumbnailDownloadUrl);
 
-                    newVideoRef.setValue(video);
+                    return newVideoRef.setValue(video);
+                });
+            }).addOnCompleteListener(task -> {
+                progressDialog.dismiss();
 
-                    progressDialog.dismiss();
+                if (task.isSuccessful()) {
                     Toast.makeText(UploadVideoActivity.this, "Video uploaded successfully!", Toast.LENGTH_SHORT).show();
                 } else {
-                    progressDialog.dismiss();
                     Toast.makeText(UploadVideoActivity.this, "Failed to upload video", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            Toast.makeText(this, "Please select a video to upload", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select a video and a thumbnail to upload", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
