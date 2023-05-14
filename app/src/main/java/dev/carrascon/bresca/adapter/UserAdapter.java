@@ -1,5 +1,6 @@
 package dev.carrascon.bresca.adapter;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import dev.carrascon.bresca.R;
+import dev.carrascon.bresca.activity.UserProfileActivity;
 import dev.carrascon.bresca.model.User;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
@@ -42,6 +44,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         } else {
             holder.profileImageView.setImageResource(R.drawable.ic_launcher_background);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent profileIntent = new Intent(mContext, UserProfileActivity.class);
+            profileIntent.putExtra("userId", user.getUserId());
+            mContext.startActivity(profileIntent);
+        });
     }
 
     @Override

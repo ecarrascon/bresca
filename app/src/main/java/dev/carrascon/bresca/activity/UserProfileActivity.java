@@ -42,19 +42,19 @@ public class UserProfileActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
-        FirebaseUser user = auth.getCurrentUser();
+        String userId = getIntent().getStringExtra("userId");
+        if (userId == null) {
+            FirebaseUser user = auth.getCurrentUser();
+            if (user != null) {
+                userId = user.getUid();
+            }
+        }
 
-        if(user != null) {
-            txtName.setText(user.getDisplayName());
+        if(userId != null) {
+            followersRef = database.getReference().child("Followers").child(userId);
+            followingRef = database.getReference().child("Following").child(userId);
 
-            Glide.with(this)
-                    .load(user.getPhotoUrl())
-                    .into(imgProfile);
-
-            followersRef = database.getReference().child("Followers").child(user.getUid());
-            followingRef = database.getReference().child("Following").child(user.getUid());
-
-            database.getReference().child("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            database.getReference().child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     User userApp = snapshot.getValue(User.class);
@@ -90,6 +90,7 @@ public class UserProfileActivity extends AppCompatActivity {
             });
         }
     }
+
 
     private void updateFollowersCount() {
         followersRef.addValueEventListener(new ValueEventListener() {
