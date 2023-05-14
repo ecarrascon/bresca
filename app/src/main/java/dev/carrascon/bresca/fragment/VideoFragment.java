@@ -35,6 +35,7 @@ import java.util.Calendar;
 
 import dev.carrascon.bresca.R;
 import dev.carrascon.bresca.model.ScheduledVideo;
+import dev.carrascon.bresca.model.Video;
 
 
 public class VideoFragment extends Fragment {
@@ -50,6 +51,8 @@ public class VideoFragment extends Fragment {
     private com.google.android.exoplayer2.ui.PlayerView exoPlayerView;
     private SimpleExoPlayer exoPlayer;
     private Button scheduleButton;
+    private Button followButton;
+    private Video video;
 
 
     public VideoFragment() {
@@ -87,13 +90,79 @@ public class VideoFragment extends Fragment {
 
         tvScheduledUsers = view.findViewById(R.id.tv_scheduled_users);
 
+        followButton = view.findViewById(R.id.followButton);
+        followButton.setOnClickListener(v -> followUser());
 
         exoPlayerView = view.findViewById(R.id.exoPlayerView);
         initializePlayer();
         updateScheduledUsersCount();
+        fetchVideoData();
+
 
     }
 
+    private void fetchVideoData() {
+        DatabaseReference videoRef = FirebaseDatabase.getInstance().getReference("Videos").child(videoId);
+        videoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                video = dataSnapshot.getValue(Video.class);
+                updateFollowButton();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle error
+            }
+        });
+    }
+
+    private void updateFollowButton() {
+        if (video != null) {
+            String videoUserId = video.getUserId();
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (currentUser != null && !currentUser.getUid().equals(videoUserId)) {
+                DatabaseReference followingRef = FirebaseDatabase.getInstance().getReference("Following").child(currentUser.getUid()).child(videoUserId);
+                followingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            followButton.setText("Unfollow");
+                        } else {
+                            followButton.setText("Follow");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle error
+                    }
+                });
+            } else {
+                followButton.setVisibility(View.GONE);
+            }
+        }
+    }
+    private void followUser() {
+        if (video != null) {
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (currentUser != null) {
+                String currentUserId = currentUser.getUid();
+                String videoUserId = video.getUserId();
+                DatabaseReference followersRef = FirebaseDatabase.getInstance().getReference("Followers").child(videoUserId).child(currentUserId);
+                DatabaseReference followingRef = FirebaseDatabase.getInstance().getReference("Following").child(currentUserId).child(videoUserId);
+                if (followButton.getText().equals("Follow")) {
+                    followersRef.setValue(true);
+                    followingRef.setValue(true);
+                    followButton.setText("Unfollow");
+                } else {
+                    followersRef.removeValue();
+                    followingRef.removeValue();
+                    followButton.setText("Follow");
+                }
+            }
+        }
+    }
     private void openCalendar() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);

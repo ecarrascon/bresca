@@ -1,7 +1,7 @@
 package dev.carrascon.bresca.model;
 
 public class Video {
-    private String userId;
+    private String userId; // The creator of the video
     private String videoUrl;
     private String thumbnailUrl;
     private String title;

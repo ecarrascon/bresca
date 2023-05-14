@@ -1,7 +1,12 @@
 package dev.carrascon.bresca.model;
 
+import java.util.List;
+
+
 public class User {
     String userId, name, profile;
+    List<String> followers, following;
+
 
     public User(String userId, String name, String profile) {
         this.userId = userId;
@@ -34,5 +39,21 @@ public class User {
 
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+
+    public List<String> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<String> followers) {
+        this.followers = followers;
+    }
+
+    public List<String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<String> following) {
+        this.following = following;
     }
 }
