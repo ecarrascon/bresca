@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -262,6 +263,9 @@ public class VideoFragment extends Fragment {
         exoPlayer.setMediaSource(mediaSource);
         exoPlayer.prepare();
         exoPlayer.setPlayWhenReady(true);
+
+        exoPlayer.setRepeatMode(Player.REPEAT_MODE_ALL);
+
 
         exoPlayerView.setOnClickListener(v -> exoPlayer.setPlayWhenReady(!exoPlayer.isPlaying()));
     }
