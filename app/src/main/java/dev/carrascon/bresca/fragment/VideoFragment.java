@@ -1,6 +1,7 @@
 package dev.carrascon.bresca.fragment;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -36,7 +38,9 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import dev.carrascon.bresca.R;
+import dev.carrascon.bresca.activity.UserProfileActivity;
 import dev.carrascon.bresca.model.ScheduledVideo;
+import dev.carrascon.bresca.model.User;
 import dev.carrascon.bresca.model.Video;
 
 
@@ -50,11 +54,13 @@ public class VideoFragment extends Fragment {
     private TextView tvScheduledUsers;
 
     private TextView tvTitle;
+    private TextView tvUploader;
+
     private Button btnShowDescription;
 
 
     private com.google.android.exoplayer2.ui.PlayerView exoPlayerView;
-    private SimpleExoPlayer exoPlayer;
+    private ExoPlayer exoPlayer;
     private Button scheduleButton;
     private Button followButton;
     private Video video;
@@ -94,6 +100,8 @@ public class VideoFragment extends Fragment {
         scheduleButton.setOnClickListener(v -> openCalendar());
 
         tvTitle = view.findViewById(R.id.tvTitle);
+        tvUploader = view.findViewById(R.id.tvUploader);
+
         btnShowDescription = view.findViewById(R.id.btnShowDescription);
         btnShowDescription.setOnClickListener(v -> showDescriptionDialog());
 
@@ -117,6 +125,22 @@ public class VideoFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 video = dataSnapshot.getValue(Video.class);
                 tvTitle.setText(video.getTitle());
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(video.getUserId());
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        if (user != null) {
+                            tvUploader.setText(user.getName());
+                            tvUploader.setOnClickListener(v -> openUserProfile(user.getUserId()));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle error
+                    }
+                });
                 updateFollowButton();
             }
 
@@ -126,6 +150,7 @@ public class VideoFragment extends Fragment {
             }
         });
     }
+
     private void showDescriptionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Video Description");
@@ -188,6 +213,11 @@ public class VideoFragment extends Fragment {
                 }
             }
         }
+    }
+    private void openUserProfile(String userId) {
+        Intent intent = new Intent(requireContext(), UserProfileActivity.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
     }
     private void openCalendar() {
         Calendar calendar = Calendar.getInstance();

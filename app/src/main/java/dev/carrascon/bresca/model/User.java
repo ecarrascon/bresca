@@ -2,11 +2,14 @@ package dev.carrascon.bresca.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class User {
     String userId, name, profile;
-    List<String> followers, following, videoIds;
+    List<String> followers, following;
+    Map<String, String> videoIds;
+
 
 
     public User(String userId, String name, String profile) {
@@ -58,11 +61,11 @@ public class User {
         this.following = following;
     }
 
-    public List<String> getVideoIds() {
+    public Map<String, String> getVideoIds() {
         return videoIds;
     }
 
-    public void setVideoIds(List<String> videoIds) {
+    public void setVideoIds(Map<String, String> videoIds) {
         this.videoIds = videoIds;
     }
 }
