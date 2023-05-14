@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -29,7 +30,7 @@ import dev.carrascon.bresca.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnSignIn;
+    ImageButton btnSignIn;
     FirebaseAuth auth;
     FirebaseDatabase database;
     GoogleSignInClient managerGoogleSignInClient;

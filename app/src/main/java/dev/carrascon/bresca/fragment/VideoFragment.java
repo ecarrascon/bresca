@@ -1,5 +1,6 @@
 package dev.carrascon.bresca.fragment;
 
+import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import android.widget.Button;
 import android.app.DatePickerDialog;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +48,9 @@ public class VideoFragment extends Fragment {
     private String videoUrl;
     private String videoId;
     private TextView tvScheduledUsers;
+
+    private TextView tvTitle;
+    private Button btnShowDescription;
 
 
     private com.google.android.exoplayer2.ui.PlayerView exoPlayerView;
@@ -88,6 +93,10 @@ public class VideoFragment extends Fragment {
         scheduleButton = view.findViewById(R.id.scheduleButton);
         scheduleButton.setOnClickListener(v -> openCalendar());
 
+        tvTitle = view.findViewById(R.id.tvTitle);
+        btnShowDescription = view.findViewById(R.id.btnShowDescription);
+        btnShowDescription.setOnClickListener(v -> showDescriptionDialog());
+
         tvScheduledUsers = view.findViewById(R.id.tv_scheduled_users);
 
         followButton = view.findViewById(R.id.followButton);
@@ -107,6 +116,7 @@ public class VideoFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 video = dataSnapshot.getValue(Video.class);
+                tvTitle.setText(video.getTitle());
                 updateFollowButton();
             }
 
@@ -116,7 +126,23 @@ public class VideoFragment extends Fragment {
             }
         });
     }
+    private void showDescriptionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Video Description");
 
+        final ScrollView scrollView = new ScrollView(requireContext());
+        final TextView tvDescription = new TextView(requireContext());
+        tvDescription.setPadding(16, 16, 16, 16);
+        tvDescription.setText(video.getDescription());
+        scrollView.addView(tvDescription);
+
+        builder.setView(scrollView);
+
+        builder.setPositiveButton("Close", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
     private void updateFollowButton() {
         if (video != null) {
             String videoUserId = video.getUserId();

@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <Button
+
+    <ImageButton
         android:id="@+id/btnGoogleSignIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="131dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="226dp"
+        android:layout_height="98dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="340dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/common_google_signin_btn_text_light" />
 </androidx.constraintlayout.widget.ConstraintLayout>
