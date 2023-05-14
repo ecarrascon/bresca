@@ -131,6 +131,9 @@ public class UploadVideoActivity extends AppCompatActivity {
 
                     String thumbnailDownloadUrl = thumbnailTask.getResult().toString();
 
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users")
+                            .child(firebaseAuth.getCurrentUser().getUid());
+
                     DatabaseReference newVideoRef = databaseReference.push();
                     String videoId = newVideoRef.getKey();
 
@@ -139,6 +142,9 @@ public class UploadVideoActivity extends AppCompatActivity {
                     video.setTitle(edtTitle.getText().toString().trim());
                     video.setDescription(edtDescription.getText().toString().trim());
                     video.setThumbnailUrl(thumbnailDownloadUrl);
+
+                    // Add the videoId to the current user's videoIds list
+                    userRef.child("videoIds").push().setValue(videoId);
 
                     return newVideoRef.setValue(video);
                 });
