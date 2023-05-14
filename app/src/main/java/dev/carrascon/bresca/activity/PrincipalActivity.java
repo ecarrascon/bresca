@@ -18,6 +18,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private Button btnGoToUpload;
     private Button btnGoToWatch;
     private Button btnLogout;
+    private Button btnUserProfile;
     private FirebaseAuth auth;
     private GoogleSignInClient managerGoogleSignInClient;
 
@@ -38,6 +39,7 @@ public class PrincipalActivity extends AppCompatActivity {
         btnGoToUpload = findViewById(R.id.btnGoToUpload);
         btnGoToWatch = findViewById(R.id.btnGoToWatch);
         btnLogout = findViewById(R.id.btnLogout);
+        btnUserProfile = findViewById(R.id.btnUserProfile);
 
         btnGoToWatch.setOnClickListener(v -> {
             Intent watchIntent = new Intent(PrincipalActivity.this, VideoFeedActivity.class);
@@ -56,6 +58,11 @@ public class PrincipalActivity extends AppCompatActivity {
             Intent logoutIntent = new Intent(PrincipalActivity.this, MainActivity.class);
             startActivity(logoutIntent);
             finish();
+        });
+
+        btnUserProfile.setOnClickListener(v -> {
+            Intent profileIntent = new Intent(PrincipalActivity.this, UserProfileActivity.class);
+            startActivity(profileIntent);
         });
     }
 }
