@@ -3,6 +3,7 @@ package dev.carrascon.bresca.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -15,6 +16,7 @@ import dev.carrascon.bresca.R;
 
 public class PrincipalActivity extends AppCompatActivity {
 
+    private Button btnGoToCalendar;
     private Button btnGoToUpload;
     private Button btnGoToWatch;
     private Button btnLogout;
@@ -25,6 +27,8 @@ public class PrincipalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_principal);
 
         auth = FirebaseAuth.getInstance();
@@ -40,6 +44,7 @@ public class PrincipalActivity extends AppCompatActivity {
         btnGoToWatch = findViewById(R.id.btnGoToWatch);
         btnLogout = findViewById(R.id.btnLogout);
         btnUserProfile = findViewById(R.id.btnUserProfile);
+        btnGoToCalendar = findViewById(R.id.btnGoToCalendar);
 
         btnGoToWatch.setOnClickListener(v -> {
             Intent watchIntent = new Intent(PrincipalActivity.this, VideoFeedActivity.class);
@@ -63,6 +68,11 @@ public class PrincipalActivity extends AppCompatActivity {
         btnUserProfile.setOnClickListener(v -> {
             Intent profileIntent = new Intent(PrincipalActivity.this, UserProfileActivity.class);
             startActivity(profileIntent);
+        });
+
+        btnGoToCalendar.setOnClickListener(v -> {
+            Intent calendarIntent = new Intent(PrincipalActivity.this, UserCalendarActivity.class);
+            startActivity(calendarIntent);
         });
     }
 }

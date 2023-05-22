@@ -2,6 +2,7 @@ package dev.carrascon.bresca.fragment;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -133,6 +134,7 @@ public class VideoFragment extends Fragment {
                         User user = dataSnapshot.getValue(User.class);
                         if (user != null) {
                             tvUploader.setText(user.getName());
+                            tvUploader.setPaintFlags(tvUploader.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                             tvUploader.setOnClickListener(v -> openUserProfile(user.getUserId()));
                         }
                     }

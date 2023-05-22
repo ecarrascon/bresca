@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_user_profile);
 
         imgProfile = findViewById(R.id.imgProfile);
@@ -60,9 +62,12 @@ public class UserProfileActivity extends AppCompatActivity {
                     User userApp = snapshot.getValue(User.class);
                     if (userApp != null) {
                         txtName.setText(userApp.getName());
-                        Glide.with(UserProfileActivity.this)
-                                .load(userApp.getProfile())
-                                .into(imgProfile);
+                        if(!isDestroyed()) {
+                            Glide.with(UserProfileActivity.this)
+                                    .load(userApp.getProfile())
+                                    .into(imgProfile);
+                        }
+
 
                         updateFollowersCount();
                         updateFollowingCount();
