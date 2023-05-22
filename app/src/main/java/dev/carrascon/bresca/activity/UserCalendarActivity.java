@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,7 @@ import dev.carrascon.bresca.model.Video;
 
 public class UserCalendarActivity extends AppCompatActivity {
 
+    private String currentUserId;
     private LinearLayout videosLayout;
     private DatabaseReference scheduledVideosRef;
     private DatabaseReference videosRef;
@@ -32,6 +35,11 @@ public class UserCalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_calendar);
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            currentUserId = currentUser.getUid();
+        }
 
         videosLayout = findViewById(R.id.videos_layout);
         scheduledVideosRef = FirebaseDatabase.getInstance().getReference("ScheduledVideos");
@@ -66,13 +74,15 @@ public class UserCalendarActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ScheduledVideo scheduledVideo = snapshot.getValue(ScheduledVideo.class);
 
-                    Calendar scheduledVideoCalendar = Calendar.getInstance();
-                    scheduledVideoCalendar.setTimeInMillis(scheduledVideo.getScheduledDate());
+                    if (scheduledVideo.getUserId().equals(currentUserId)) {
+                        Calendar scheduledVideoCalendar = Calendar.getInstance();
+                        scheduledVideoCalendar.setTimeInMillis(scheduledVideo.getScheduledDate());
 
-                    if (selectedDateCalendar.get(Calendar.YEAR) == scheduledVideoCalendar.get(Calendar.YEAR) &&
-                            selectedDateCalendar.get(Calendar.MONTH) == scheduledVideoCalendar.get(Calendar.MONTH) &&
-                            selectedDateCalendar.get(Calendar.DAY_OF_MONTH) == scheduledVideoCalendar.get(Calendar.DAY_OF_MONTH)) {
-                        loadVideoDetails(scheduledVideo.getVideoId());
+                        if (selectedDateCalendar.get(Calendar.YEAR) == scheduledVideoCalendar.get(Calendar.YEAR) &&
+                                selectedDateCalendar.get(Calendar.MONTH) == scheduledVideoCalendar.get(Calendar.MONTH) &&
+                                selectedDateCalendar.get(Calendar.DAY_OF_MONTH) == scheduledVideoCalendar.get(Calendar.DAY_OF_MONTH)) {
+                            loadVideoDetails(scheduledVideo.getVideoId());
+                        }
                     }
                 }
             }
