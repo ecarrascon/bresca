@@ -18,21 +18,15 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
 
-  <ScrollView
-      android:layout_width="match_parent"
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/videos_recycler_view"
+      android:layout_width="0dp"
       android:layout_height="0dp"
+      android:layout_marginTop="16dp"
       app:layout_constraintTop_toBottomOf="@id/date_select_button"
       app:layout_constraintBottom_toBottomOf="parent"
-      android:layout_marginTop="16dp">
-
-    <LinearLayout
-        android:id="@+id/videos_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-      <!-- This layout will be filled dynamically with video buttons -->
-    </LinearLayout>
-
-  </ScrollView>
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      tools:listitem="@layout/video_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
