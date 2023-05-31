@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.viewpager2.widget.ViewPager2;
@@ -50,19 +51,21 @@ public class VideoFeedActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 videoList.clear();
+                List<Video> unseenVideos = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Video video = snapshot.getValue(Video.class);
                     if (video != null) {
                         video.setVideoId(snapshot.getKey());
-                        videoList.add(video);
+                        unseenVideos.add(video);
                     }
                 }
+                Collections.shuffle(unseenVideos);
+                videoList.addAll(unseenVideos);
                 videoAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle database error
             }
         });
     }

@@ -56,8 +56,8 @@ public class UploadVideoActivity extends AppCompatActivity {
         btnUploadVideo = findViewById(R.id.btnUploadVideo);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading Video");
-        progressDialog.setMessage("Please wait while we upload your video...");
+        progressDialog.setTitle(getString(R.string.uploading_video));
+        progressDialog.setMessage(getString(R.string.wait_upload_video));
 
         firebaseAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference("Videos");
@@ -102,8 +102,6 @@ public class UploadVideoActivity extends AppCompatActivity {
         if (videoUri != null && thumbnailUri != null) {
             progressDialog.show();
 
-            // We generate a unique timestamp for each video uploaded.
-            // This is done to prevent overwriting videos in Firebase Storage in case two videos have the same name.
             // Generamos una marca de tiempo única para cada video subido.
             // Esto se hace para evitar sobrescribir videos en Firebase Storage en caso de que dos videos tengan el mismo nombre.
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
@@ -146,7 +144,6 @@ public class UploadVideoActivity extends AppCompatActivity {
                     video.setDescription(edtDescription.getText().toString().trim());
                     video.setThumbnailUrl(thumbnailDownloadUrl);
 
-                    // Add the videoId to the current user's videoIds list
                     userRef.child("videoIds").push().setValue(videoId);
 
                     return newVideoRef.setValue(video);
@@ -155,13 +152,13 @@ public class UploadVideoActivity extends AppCompatActivity {
                 progressDialog.dismiss();
 
                 if (task.isSuccessful()) {
-                    Toast.makeText(UploadVideoActivity.this, "Video uploaded successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadVideoActivity.this, R.string.video_uploaded, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(UploadVideoActivity.this, "Failed to upload video", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadVideoActivity.this, R.string.failed_upload, Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            Toast.makeText(this, "Please select a video and a thumbnail to upload", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.select_a_error, Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
-        // Check if the user is already signed in.
-        // This step is necessary to prevent the user from having to sign in every time the app is opened.
         // Comprueba si el usuario ya ha iniciado sesión.
         // Este paso es necesario para evitar que el usuario tenga que iniciar sesión cada vez que abre la aplicación.
         if (currentUser != null) {
@@ -60,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setTitle("Creating account");
-        progressDialog.setMessage("We are creating your account!");
+        progressDialog.setTitle(getString(R.string.creating_acc));
+        progressDialog.setMessage(getString(R.string.creating_acc_message));
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
 
 
-                        Toast.makeText(MainActivity.this, "Sorry, authentication failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
 
                     }
 

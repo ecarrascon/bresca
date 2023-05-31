@@ -111,7 +111,6 @@ public class UserCalendarActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Handle database error here
             }
         });
     }
@@ -128,7 +127,6 @@ public class UserCalendarActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Handle database error here
             }
         });
     }

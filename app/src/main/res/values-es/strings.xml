@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="upload_video">Subir vídeo</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="watch_videos">Ver vídeos</string>
+    <string name="profile">Perfil</string>
+    <string name="saved_recipes">Recetas guardadas</string>
+    <string name="select_video">Seleccionar vídeo</string>
+    <string name="uploader_video">Subir vídeo</string>
+    <string name="title">Título</string>
+    <string name="recipe">Receta</string>
+    <string name="select_date">Seleccionar fecha</string>
+    <string name="followers">Seguidores</string>
+    <string name="following">Siguiendo</string>
+    <string name="cook">Cocinar</string>
+    <string name="follow">Seguir</string>
+    <string name="recipe_button">Receta</string>
+    <string name="creating_acc">Creando cuenta</string>
+    <string name="creating_acc_message">Estamos creando tu cuenta!</string>
+    <string name="video_scheduled">¡Vídeo guardado!</string>
+    <string name="failed_schedule">Fallo al guardar vídeo</string>
+    <string name="cook_today">" personas van a cocinar esto hoy"</string>
+    <string name="uploading_video">Subiendo vídeo</string>
+    <string name="wait_upload_video">Por favor espera mientras subimos tu vídeo...</string>
+    <string name="video_uploaded">¡Video subido exitosamente!</string>
+    <string name="failed_upload">Error al subir el video</string>
+    <string name="select_a_error">" Por favor, selecciona un video y una miniatura"</string>
+    <string name="auth_failed">Autenticación fallida</string>
+    <string name="followers_numbers">Seguidores: %d</string>
+    <string name="failed_load_followers">Error al cargar seguidores</string>
+    <string name="following_numbers">Siguiendo: %d</string>
+    <string name="failed_load_following">Error al cargar \"seguidos\"</string>
+    <string name="video_recipe">Receta del vídeo</string>
+    <string name="click_on_the_below_image_to_select_thumbnail">Presiona la imagen inferior para seleccionar la miniatura</string>
+</resources>

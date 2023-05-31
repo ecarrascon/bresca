@@ -27,7 +27,7 @@
         android:layout_height="48dp"
         android:layout_below="@id/txtName"
         android:layout_marginTop="20dp"
-        android:text="Followers"
+        android:text="@string/followers"
         android:clickable="true"
         android:focusable="true" />
 
@@ -37,7 +37,7 @@
         android:layout_height="48dp"
         android:layout_below="@id/followersCount"
         android:layout_marginTop="10dp"
-        android:text="Following"
+        android:text="@string/following"
         android:clickable="true"
         android:focusable="true" />
 

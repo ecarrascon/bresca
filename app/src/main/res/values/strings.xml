@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">bresca</string>
+    <string name="app_name" translatable="false">Bresca</string>
+    <string name="upload_video">Upload Video</string>
+    <string name="logout">Logout</string>
+    <string name="watch_videos">Watch videos</string>
+    <string name="profile">Profile</string>
+    <string name="saved_recipes">Saved Recipes</string>
+    <string name="select_video">Select Video</string>
+    <string name="uploader_video">Upload Video</string>
+    <string name="title">Title</string>
+    <string name="recipe">Recipe</string>
+    <string name="select_date">Select Date</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="cook">Cook</string>
+    <string name="follow">Follow</string>
+    <string name="recipe_button">Recipe</string>
+    <string name="creating_acc">Creating account</string>
+    <string name="creating_acc_message">We are creating your account!</string>
+    <string name="unfollow" translatable="false">Unfollow</string>
+    <string name="video_scheduled">Video scheduled!</string>
+    <string name="failed_schedule">Failed to schedule video</string>
+    <string name="cook_today">" users are going to cook this today"</string>
+    <string name="uploading_video">Uploading Video</string>
+    <string name="wait_upload_video">Please wait while we upload your video...</string>
+    <string name="video_uploaded">Video uploaded successfully!</string>
+    <string name="failed_upload">Failed to upload video</string>
+    <string name="select_a_error">Please select a video and a thumbnail to upload</string>
+    <string name="auth_failed">Sorry, authentication failed</string>
+    <string name="followers_numbers">Followers: %d</string>
+    <string name="failed_load_followers">Failed to load followers</string>
+    <string name="following_numbers">Following: %d</string>
+    <string name="failed_load_following">Failed to load following</string>
+    <string name="video_recipe">Video Recipe</string>
+    <string name="click_on_the_below_image_to_select_thumbnail">Click on the below image to select thumbnail</string>
 </resources>

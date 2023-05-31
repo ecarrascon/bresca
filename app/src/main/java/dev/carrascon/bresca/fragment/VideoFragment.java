@@ -141,7 +141,6 @@ public class VideoFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle error
                     }
                 });
                 updateFollowButton();
@@ -149,14 +148,13 @@ public class VideoFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle error
             }
         });
     }
 
     private void showDescriptionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Video Description");
+        builder.setTitle(R.string.video_recipe);
 
         final ScrollView scrollView = new ScrollView(requireContext());
         final TextView tvDescription = new TextView(requireContext());
@@ -189,7 +187,6 @@ public class VideoFragment extends Fragment {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Handle error
                     }
                 });
             } else {
@@ -244,10 +241,10 @@ public class VideoFragment extends Fragment {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ScheduledVideos");
             ScheduledVideo scheduledVideo = new ScheduledVideo(userId, videoId, scheduledDate);
             databaseReference.push().setValue(scheduledVideo)
-                    .addOnSuccessListener(aVoid -> Toast.makeText(requireContext(), "Video scheduled!", Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to schedule video", Toast.LENGTH_SHORT).show());
+                    .addOnSuccessListener(aVoid -> Toast.makeText(requireContext(), R.string.video_scheduled, Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(requireContext(), R.string.failed_schedule, Toast.LENGTH_SHORT).show());
         } else {
-            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Usuario no registrado", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -256,7 +253,6 @@ public class VideoFragment extends Fragment {
         exoPlayerView.setPlayer(exoPlayer);
         exoPlayerView.setUseController(false);
 
-        // Set the video scaling mode
         exoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(requireContext(), Util.getUserAgent(requireContext(), "Bresca"));
@@ -288,12 +284,11 @@ public class VideoFragment extends Fragment {
                         count++;
                     }
                 }
-                tvScheduledUsers.setText(count + " users are going to cook this today");
+                tvScheduledUsers.setText(count + getString(R.string.cook_today));
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle database error
             }
         });
     }

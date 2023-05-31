@@ -101,12 +101,14 @@ public class UserProfileActivity extends AppCompatActivity {
         followersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                txtFollowers.setText("Followers: " + snapshot.getChildrenCount());
+                long followersCount = snapshot.getChildrenCount();
+                String followersText = getResources().getString(R.string.followers_numbers, followersCount);
+                txtFollowers.setText(followersText);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(UserProfileActivity.this, "Failed to load followers", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfileActivity.this, R.string.failed_load_followers, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -115,12 +117,15 @@ public class UserProfileActivity extends AppCompatActivity {
         followingRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                txtFollowing.setText("Following: " + snapshot.getChildrenCount());
+                long followingCount = snapshot.getChildrenCount();
+                String followingText = getResources().getString(R.string.following_numbers, followingCount);
+                txtFollowing.setText(followingText);
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(UserProfileActivity.this, "Failed to load following", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfileActivity.this, R.string.failed_load_following, Toast.LENGTH_SHORT).show();
             }
         });
     }
