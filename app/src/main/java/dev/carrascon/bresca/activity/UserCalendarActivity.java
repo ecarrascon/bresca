@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -130,7 +131,6 @@ public class UserCalendarActivity extends AppCompatActivity {
             }
         });
     }
-
     private class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewHolder> {
 
         private List<Video> videoList;
@@ -158,7 +158,16 @@ public class UserCalendarActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video.getVideoUrl()));
                 startActivity(intent);
             });
+
+            holder.recipeButton.setOnClickListener(v -> {
+                new AlertDialog.Builder(UserCalendarActivity.this)
+                        .setTitle("Receta")
+                        .setMessage(video.getDescription())
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            });
         }
+
 
         @Override
         public int getItemCount() {
@@ -166,16 +175,18 @@ public class UserCalendarActivity extends AppCompatActivity {
         }
 
         public class VideoViewHolder extends RecyclerView.ViewHolder {
-
             ImageView thumbnailImageView;
             TextView titleTextView;
+            Button recipeButton;
 
             public VideoViewHolder(View itemView) {
                 super(itemView);
 
                 thumbnailImageView = itemView.findViewById(R.id.video_thumbnail);
                 titleTextView = itemView.findViewById(R.id.video_title);
+                recipeButton = itemView.findViewById(R.id.recipe_button);
             }
         }
+
     }
 }
